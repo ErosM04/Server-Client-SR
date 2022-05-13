@@ -7,8 +7,10 @@ public class Client {
     public static void main(String[] args) throws IOException{
         String nome = "192.168.8.3"; //inserire l'ip sel server
         int port = 10000;
+        //Creo l'oggetto per misurare il tempo e fermare l'esecuzione se dopo 30s non riceve niente
 
         Socket client = new Socket(); //oggetto socket, va connesso ad un server
+        client.setSoTimeout(30000); //timeout sul metodo read()
         client.connect(new InetSocketAddress(nome, port)); //il client attende di connettersi al server, il metodo e' bloccante
 
         //come sul server va bufferizzata la comunicazione
