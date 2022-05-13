@@ -19,7 +19,7 @@ public class Client {
         BufferedWriter out = new BufferedWriter(o);
 
         //Creo il file da cui leggere i dati
-        Scanner datiClient = new Scanner(new File("C:\\Users\\eros.menin\\Desktop\\Client\\src\\DatiClient.csv"));
+        Scanner datiClient = new Scanner(new File("Client/DatiClient.csv"));
         BufferedWriter datiUtenti = new BufferedWriter(new FileWriter(new File("DatiUtenti")));
 
         //Scorro il file e man mano che leggo una riga compilo il file finale chiedendo il numero al server
