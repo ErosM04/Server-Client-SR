@@ -5,7 +5,7 @@ import java.util.*;
 public class Client {
     //per una documentazione + accurata guarda il progetto sul server
     public static void main(String[] args) throws IOException{
-        String nome = "192.168.8.3"; //inserire l'ip sel server
+        String nome = "127.0.0.1"; //inserire l'ip sel server
         int port = 10000;
 
         Socket client = new Socket(); //oggetto socket, va connesso ad un server
@@ -19,7 +19,7 @@ public class Client {
         BufferedWriter out = new BufferedWriter(o);
 
         //Creo il file da cui leggere i dati
-        Scanner datiClient = new Scanner(new File("Client/DatiClient.csv"));
+        Scanner datiClient = new Scanner(new File("DatiClient.csv"));
         BufferedWriter datiUtenti = new BufferedWriter(new FileWriter(new File("DatiUtenti")));
 
         //Scorro il file e man mano che leggo una riga compilo il file finale chiedendo il numero al server

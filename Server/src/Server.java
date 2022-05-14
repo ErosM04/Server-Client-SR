@@ -46,7 +46,7 @@ public class Server {
                 try {
                     out.write("find:"+getNumber(a.substring(a.indexOf(":")+1, a.length())));
                 } catch (Exception e) {
-                    out.write("No so bon a scrivere codice");
+                    System.err.println(e);
                 }
             }
             out.newLine();
