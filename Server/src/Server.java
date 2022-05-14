@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Server {
 
     public static String getNumber(String k)throws Exception{
-        Scanner sc = new Scanner(new File("DatiServer.csv"));
+        Scanner sc = new Scanner(new File("Server/DatiServer.csv"));
         while(sc.hasNext()){
             String line = sc.nextLine();
             String elm[] = line.split(";");
@@ -21,6 +21,8 @@ public class Server {
         ServerSocket server = new ServerSocket(port); //crea server
         Socket s = server.accept(); //il server aspetta che un client si connetta
                                     //questo metodo è bloccante
+        s.setSoTimeout(180000);
+
 
         OutputStreamWriter o = new OutputStreamWriter(s.getOutputStream()); //creo un outputWriter per scrivere sul canale di trasmissione
         InputStreamReader i = new InputStreamReader(s.getInputStream()); //creo un inputReader per leggere dal canale di trasmissione
@@ -33,29 +35,28 @@ public class Server {
 
         //--------------------------------Fine implementazione cose importanti------------------------------------------
 
-        String a = "Welcome"; //stringa da trasmettere
+        String a = ""; //stringa da trasmettere
 
         //--------------------------------Fine output-------------------------------------------------------------------
         while(true) {
-            a = in.readLine(); //per leggere un input, e' bloccante
-            System.out.println(a);
-            if(a.equals("end")){
+            try {
+                a = in.readLine(); //per leggere un input, e' bloccante
+            }catch (SocketTimeoutException e){
                 break;
             }
-            if(a.substring(0, a.indexOf(":")).equals("give")){
+            System.out.println(a);
+            if(a != null && a.substring(0, a.indexOf(":")).equals("give")){
                 try {
                     out.write("find:"+getNumber(a.substring(a.indexOf(":")+1, a.length())));
                 } catch (Exception e) {
                     System.err.println(e);
                 }
+                out.newLine();
+                out.flush();
             }
-            out.newLine();
-            out.flush();
         }
-
         o.close();
         i.close();
-        //---------------------------------Chiudo la connessione--------------------------------------------------------
         s.close(); //chiudo la connessione
         server.close(); //chiude il server
     }
