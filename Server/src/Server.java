@@ -3,25 +3,6 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Server {
-    /**
-     * Metodo che data una chiave cerca nel file csv il numero di telefono corrispondente al codice
-     * passato come parametro e lo ritorna
-     *
-     * @param k chiave per la ricerca del numero di telefono
-     * @return ritorna il numero del telefono corrispondente alla chiave
-     * @throws Exception in caso non trovi il file
-     */
-    public static String getNumber(String k)throws Exception{
-        Scanner sc = new Scanner(new File("Server/DatiServer.csv"));
-        while(sc.hasNext()){
-            String line = sc.nextLine();
-            String elm[] = line.split(";");
-            if(elm[0].equals(k)){
-                return elm[1];
-            }
-        }
-        return null;
-    }
 
     public static void main(String[] args) throws IOException {
         int port  = 10000;
@@ -72,5 +53,25 @@ public class Server {
         i.close();
         s.close();                              //chiudo la connessione
         server.close();                         //chiude il server
+    }
+
+    /**
+     * Metodo che data una chiave cerca nel file csv il numero di telefono corrispondente al codice
+     * passato come parametro e lo ritorna
+     *
+     * @param k chiave per la ricerca del numero di telefono
+     * @return ritorna il numero del telefono corrispondente alla chiave
+     * @throws Exception in caso non trovi il file
+     */
+    public static String getNumber(String k)throws Exception{
+        Scanner sc = new Scanner(new File("Server/DatiServer.csv"));
+        while(sc.hasNext()){
+            String line = sc.nextLine();
+            String elm[] = line.split(";");
+            if(elm[0].equals(k)){
+                return elm[1];
+            }
+        }
+        return null;
     }
 }
