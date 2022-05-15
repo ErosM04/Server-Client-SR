@@ -1,6 +1,6 @@
 import java.net.*;
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Server {
 
@@ -35,14 +35,15 @@ public class Server {
             }
             System.out.println(a); //stampa a video del messaggio ricevuto
 
-            if(a != null && a.substring(0, a.indexOf(":")).equals("give")){ //se il formato del messaggio ricevuto è corretto;
+            //if che verifica che il formato del messaggio ricevuto sia corretto:
+            if(a != null && a.substring(0, a.indexOf(":")).equals("give")){
                 try { //blocco Try-catch
                     //risposta al client con il numero di telefono dell'utente
                     out.write("find:" + getNumber(a.substring(a.indexOf(":") + 1)));
-                } catch (Exception e) { //in caso di errore vine stampato il messaggio
+                } catch (Exception e) { //in caso di errore viene stampato il messaggio
                     System.err.println(e);
                 }
-                out.newLine();          //invi del messaggio al client
+                out.newLine();          //invio del messaggio al client
                 out.flush();            //svuotamento del buffer
             }
         }
@@ -64,10 +65,10 @@ public class Server {
     public static String getNumber(String k)throws Exception{
         Scanner sc = new Scanner(new File("Server/DatiServer.csv"));
         while(sc.hasNext()){
-            String line = sc.nextLine();                //legge la riga
-            String elm[] = line.split(";");       //divide i dati
-            if(elm[0].equals(k)){                       //controlla che la matricola sia giusta e ritorna il numero di telefono
-                return elm[1];
+            String line = sc.nextLine();          //legge la riga
+            String elm[] = line.split(";"); //divide i dati
+            if(elm[0].equals(k)){                 //controlla che la matricola sia giusta e
+                return elm[1];                    //ritorna il numero di telefono
             }
         }
         return null;
