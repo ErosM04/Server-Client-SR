@@ -1,9 +1,10 @@
 # Server-Client-SR
 
-##Materia
+## Materia
 Sistemi e Reti Laboratorio
 
-##Consegna
+
+## Consegna
 La consegna richiede di implementare un’applicazione che gestisca la comunicazione tra Client e Server sulla stessa
 rete, finalizzata alla compilazione di un elenco di nominativi di persone, a cui viene aggiunto il numero di telefono,
 fornito dal Server.
@@ -29,7 +30,8 @@ Formato della riga con i dati dell’utente: ``matricola;numero di telefono``
 Per evitare che il Server rimanga in attesa inutilmente nel caso in cui il Client sia assente o termini improvvisamente,
 è necessario che dopo 3 minuti senza ricezione di richieste il Server arresti l’esecuzione.
 
-##TCP
+
+## TCP
 Per la trasmissione di tipo **connection oriented** è stato utilizzato uno stream socket che sfrutta il protocollo 
 **TCP**.
 Nato nel 1970 grazie al lavoro di un gruppo di ricerca del Dipartimento di Difesa Statunitense, il **Transmission
