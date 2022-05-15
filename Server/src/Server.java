@@ -5,70 +5,68 @@ import java.util.Scanner;
 public class Server {
 
     public static void main(String[] args) throws IOException {
-        int port  = 10000;
-        ServerSocket server = new ServerSocket(port); //crea server
+        int port  = 10000;      //porta del server
+        ServerSocket server = new ServerSocket(port); //istanziazione del server
 
-        Socket s = server.accept(); //il server aspetta che un client si connetta
-                                    //questo metodo è bloccante
+        //metodo bloccante che mette in attesa il server di connettersi al client
+        Socket s = server.accept();
 
-        s.setSoTimeout(180000);     //il metodo imposta un timeout in millisecondi che verrà avviato ogni colte che
-                                    //viene eseguito un metodo bloccante del socket, se questo timeout scade verrà
-                                    //sollevata un'eccezione.
+        /* il metodo imposta un timeout in millisecondi che verrà avviato ogni volta che
+        vengono letti i dati da client tramite il metodo bloccante read(), se questo timeout
+        scade verrà sollevata un'eccezione.*/
+        s.setSoTimeout(180000); //timeout di 3 minuti
 
-        //creo un outputWriter per scrivere sul canale di trasmissione
+        //istanziazione del outputWriter per scrivere sul canale di trasmissione
         OutputStreamWriter o = new OutputStreamWriter(s.getOutputStream());
-        //creo un inputReader per leggere dal canale di trasmissione
+        //istanziazione del inputReader per leggere dal canale di trasmissione
         InputStreamReader i = new InputStreamReader(s.getInputStream());
 
-        //il canale va bufferizzato per leggere e scrivere piu' di un carattere alla volta
+        //bufferizzazione del canale per leggere e scrivere piu' di un carattere alla volta
         BufferedWriter out = new BufferedWriter(o);
         BufferedReader in = new BufferedReader(i);
-                                                    //così abbiamo bufferizzato i canali
-
-        //--------------------------------------------------------------------------------------------------------------
 
         String a = "";                          //stringa usata come buffer
 
         while(true) {
-            try {
-                a = in.readLine();              //per leggere un input, è bloccante
-            }catch (SocketTimeoutException e){  //quando scade il SO_TIMEOUT
-                break;                          //esce dal ciclo while
+            try { //blocco Try-catch
+                a = in.readLine();              //metodo bloccante per leggere un input
+            }catch (SocketTimeoutException e){  //in caso di timeout:
+                break;                          //esce dal ciclo while e termina la sua esecuzione
             }
-            System.out.println(a);
-                                                //se ricevo il comando corretto
-            if(a != null && a.substring(0, a.indexOf(":")).equals("give")){
-                try {
-                    out.write("find:"+getNumber(a.substring(a.indexOf(":")+1, a.length())));
-                                                //risponde al client con il numero di telefono
-                } catch (Exception e) {
+            System.out.println(a); //stampa a video del messaggio ricevuto
+
+            if(a != null && a.substring(0, a.indexOf(":")).equals("give")){ //se il formato del messaggio ricevuto è corretto;
+                try { //blocco Try-catch
+                    //risposta al client con il numero di telefono dell'utente
+                    out.write("find:" + getNumber(a.substring(a.indexOf(":") + 1)));
+                } catch (Exception e) { //in caso di errore vine stampato il messaggio
                     System.err.println(e);
                 }
-                out.newLine();
-                out.flush();
+                out.newLine();          //invi del messaggio al client
+                out.flush();            //svuotamento del buffer
             }
         }
 
-        o.close();
+        o.close();                      //chiusura dei buffer
         i.close();
-        s.close();                              //chiudo la connessione
-        server.close();                         //chiude il server
+        s.close();
+        server.close();                 //chiusura serverSocket
     }
 
     /**
      * Metodo che data una chiave cerca nel file csv il numero di telefono corrispondente al codice
-     * passato come parametro e lo ritorna
+     * passato come parametro e lo ritorna.
      *
-     * @param k chiave per la ricerca del numero di telefono
-     * @return ritorna il numero del telefono corrispondente alla chiave
-     * @throws Exception in caso non trovi il file
+     * @param k stringa contenente la matricola per la ricerca del numero di telefono
+     * @return ritorna il numero di telefono corrispondente alla matricola
+     * @throws Exception in caso non trovi il file da cui prendere i dati
      */
     public static String getNumber(String k)throws Exception{
         Scanner sc = new Scanner(new File("Server/DatiServer.csv"));
         while(sc.hasNext()){
-            String line = sc.nextLine();
-            String elm[] = line.split(";");
-            if(elm[0].equals(k)){
+            String line = sc.nextLine();                //legge la riga
+            String elm[] = line.split(";");       //divide i dati
+            if(elm[0].equals(k)){                       //controlla che la matricola sia giusta e ritorna il numero di telefono
                 return elm[1];
             }
         }

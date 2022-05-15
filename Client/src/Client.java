@@ -8,21 +8,22 @@ public class Client {
         String nome = "127.0.0.1";      //stringa contenente l'ip del server
         int port = 10000;               //stringa contenente la porta del server
 
-        Socket client = new Socket();   //istanziazione oggetto socket
-        //il client attende di connettersi al server, il metodo è bloccante
+        Socket client = new Socket();   //istanziazione del client
+
+        //metodo bloccante che mette in attesa il client di connettersi al server
         client.connect(new InetSocketAddress(nome, port));
 
-        /* il metodo imposta un timeout in millisecondi che verrà avviato ogni colte che
+        /* il metodo imposta un timeout in millisecondi che verrà avviato ogni volta che
         vengono letti i dati da server tramite il metodo bloccante read(), se questo timeout
         scade verrà sollevata un'eccezione.*/
-        client.setSoTimeout(30000);
+        client.setSoTimeout(30000); //timeout di 30 secondi
 
         //istanziazione del outputWriter per scrivere sul canale di trasmissione
         OutputStreamWriter o = new OutputStreamWriter(client.getOutputStream());
         //istanziazione del inputReader per leggere dal canale di trasmissione
         InputStreamReader i = new InputStreamReader(client.getInputStream());
 
-        //bufferizzione del canale per leggere e scrivere piu' di un carattere alla volta
+        //bufferizzazione del canale per leggere e scrivere piu' di un carattere alla volta
         BufferedWriter out = new BufferedWriter(o);
         BufferedReader in = new BufferedReader(i);
 
@@ -48,21 +49,21 @@ public class Client {
             datiUtenti.write(str[0] + ";" + str[1] + ";" + str[2] + ";" + checkMessage(a) + "\n");
         }
 
-        datiClient.close();
+        datiClient.close();             //chiusura dei buffer
         datiUtenti.close();
         i.close();
         o.close();
-        client.close();         //chiusura socket
+        client.close();                 //chiusura socket
     }
 
     /**
-     * Metodo che estrae il corpo del messaggio passato come parametro
+     * Metodo che estrae il corpo del messaggio passato come parametro.
      *
      * @param message messaggio del server
      * @return ritorna il corpo del messaggio inviato, in caso questo sia null ritorna una stringa vuota
      */
     public static String checkMessage(String message){
-        System.out.println(message);
+        System.out.println(message); //stampa a video del messaggio ricevuto
         if(!message.equals(null))
             return message.substring(message.indexOf(":")+1);
         return "";
