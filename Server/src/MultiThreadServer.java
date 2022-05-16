@@ -17,7 +17,7 @@ public class MultiThreadServer {
                 //avvia il ServerThread che è un thread
                 t.start();
             }
-        } catch (IOException e) {
+        } catch (IOException e) {   //in caso di errore viene stampato il messaggio
             e.printStackTrace();
         }
     }

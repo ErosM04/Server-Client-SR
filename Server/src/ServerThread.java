@@ -46,31 +46,31 @@ public class ServerThread extends Thread {
         String a = "";                          //stringa usata come buffer
 
         while(true) {
-            try { //blocco Try-catch
+            try {
                 a = in.readLine();              //metodo bloccante per leggere un input
-            }catch (Exception e){  //in caso di timeout:
+            }catch (Exception e){               //in caso di timeout:
                 break;                          //esce dal ciclo while e termina la sua esecuzione
             }
-            System.out.println(a); //stampa a video del messaggio ricevuto
+            System.out.println(a);              //stampa a video del messaggio ricevuto
 
             //if che verifica che il formato del messaggio ricevuto sia corretto:
             if(a != null && a.substring(0, a.indexOf(":")).equals("give")){
-                try { //blocco Try-catch
+                try {
                     //risposta al client con il numero di telefono dell'utente
                     out.write("find:" + getNumber(a.substring(a.indexOf(":") + 1)));
-                    out.newLine();          //invio del messaggio al client
-                    out.flush();            //svuotamento del buffer
-                } catch (Exception e) { //in caso di errore viene stampato il messaggio
-                    System.err.println(e);
+                    out.newLine();              //invio del messaggio al client
+                    out.flush();                //svuotamento del buffer
+                } catch (Exception e) {         //in caso di errore viene stampato il messaggio
+                    e.printStackTrace();
                 }
             }
         }
 
         try {
             o.close();
-            i.close();                      //chiusura dei buffer
-            s.close();                      //chiusura del socket
-        } catch (IOException e) {
+            i.close();                          //chiusura dei buffer
+            s.close();                          //chiusura del socket
+        } catch (IOException e) {               //in caso di errore viene stampato il messaggio
             e.printStackTrace();
         }
     }
