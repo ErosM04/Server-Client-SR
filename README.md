@@ -22,7 +22,7 @@ Una volta compilato il file dei dati degli utenti per intero, il Client termina 
 Per evitare che il Client rimanga in attesa inutilmente nel caso in cui il Server sia assente o termini improvvisamente,
 è necessario che dopo 30 secondi di attesa interrompa l’esecuzione.
 
-Il secondo attore è il **Server** che una volta eseguito si mette in attesa del collegamento da parte del Client.
+Il secondo attore è il **Server** che una volta eseguito si mette in attesa del collegamento da parte di uno o più Client.
 Una volta collegato, il Server riceve le richieste del Client, contenenti le matricole degli utenti, e successivamente
 per ogni matricola cerca nel file di testo **DatiServer.csv** la ricorrenza e risponde con il corrispondente numero di
 telefono, se presente, mentre se non presente risponde con ``null``.
