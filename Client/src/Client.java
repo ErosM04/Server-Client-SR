@@ -28,7 +28,7 @@ public class Client {
         BufferedReader in = new BufferedReader(i);
 
         //scanner che legge i dati degli utenti contenuti nel file //DatiClient.csv
-        Scanner datiClient = new Scanner(new File("Client/DatiClient.csv"));
+        Scanner datiClient = new Scanner(new File("DatiClient.csv"));
         //creazione del file DatiUtenti.csv con le informazioni degli utenti e del buffer
         BufferedWriter datiUtenti = new BufferedWriter(new FileWriter("DatiUtenti.csv"));
 
@@ -61,7 +61,7 @@ public class Client {
      */
     public static String checkMessage(String message){
         System.out.println(message); //stampa a video del messaggio ricevuto
-        if(!message.equals(null) && message.substring(0, 4).equals("find:"))
+        if(!message.equals(null) && message.substring(0, 5).equals("find:"))
             return message.substring(message.indexOf(":") + 1);
         return "";
     }

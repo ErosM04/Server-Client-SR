@@ -11,7 +11,8 @@ public class ServerThread extends Thread {
     BufferedReader in;
 
     /**
-     * Il costruttore si occupa di impostare il timeout sul Socket e di inizializzare i buffer per la comunicazione
+     * Il costruttore si occupa di impostare il timeout sul Socket e
+     * di inizializzare i buffer per la comunicazione.
      *
      * @param s Socket, canale di comunicazione
      */
@@ -38,7 +39,7 @@ public class ServerThread extends Thread {
     }
 
     /**
-     * Metodo che si occupa della comunicazione tra Client e Server
+     * Metodo che si occupa della comunicazione tra Client e Server.
      */
     @Override
     public void run(){
@@ -84,7 +85,7 @@ public class ServerThread extends Thread {
      * @throws Exception in caso non trovi il file da cui prendere i dati
      */
     public static String getNumber(String k)throws Exception{
-        Scanner sc = new Scanner(new File("Server/DatiServer.csv"));
+        Scanner sc = new Scanner(new File("DatiServer.csv"));
         while(sc.hasNext()){
             String line = sc.nextLine();          //legge la riga
             String elm[] = line.split(";"); //divide i dati
