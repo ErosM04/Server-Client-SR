@@ -2,35 +2,45 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class Server {
+public class ServerThread extends Thread {
 
-    public static void main(String[] args) throws IOException {
-        int port  = 10000;      //porta del server
-        ServerSocket server = new ServerSocket(port); //istanziazione del server
+    Socket s;
+    OutputStreamWriter o;
+    InputStreamReader i;
+    BufferedWriter out;
+    BufferedReader in;
 
-        //metodo bloccante che mette in attesa il server di connettersi al client
-        Socket s = server.accept();
+    public ServerThread(Socket s){
+        this.s = s;
 
-        /* il metodo imposta un timeout in millisecondi che verrà avviato ogni volta che
-        vengono letti i dati da client tramite il metodo bloccante read(), se questo timeout
-        scade verrà sollevata un'eccezione.*/
-        s.setSoTimeout(180000); //timeout di 3 minuti
+        try {
+            /* il metodo imposta un timeout in millisecondi che verrà avviato ogni volta che
+            vengono letti i dati da client tramite il metodo bloccante read(), se questo timeout
+            scade verrà sollevata un'eccezione.*/
+            s.setSoTimeout(180000); //timeout di 3 minuti
 
-        //istanziazione del outputWriter per scrivere sul canale di trasmissione
-        OutputStreamWriter o = new OutputStreamWriter(s.getOutputStream());
-        //istanziazione del inputReader per leggere dal canale di trasmissione
-        InputStreamReader i = new InputStreamReader(s.getInputStream());
+            //istanziazione del outputWriter per scrivere sul canale di trasmissione
+            o = new OutputStreamWriter(s.getOutputStream());
+            //istanziazione del inputReader per leggere dal canale di trasmissione
+            i = new InputStreamReader(s.getInputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //bufferizzazione del canale per leggere e scrivere piu' di un carattere alla volta
-        BufferedWriter out = new BufferedWriter(o);
-        BufferedReader in = new BufferedReader(i);
+        out = new BufferedWriter(o);
+        in = new BufferedReader(i);
+    }
+
+    @Override
+    public void run(){
 
         String a = "";                          //stringa usata come buffer
 
         while(true) {
             try { //blocco Try-catch
                 a = in.readLine();              //metodo bloccante per leggere un input
-            }catch (SocketTimeoutException e){  //in caso di timeout:
+            }catch (Exception e){  //in caso di timeout:
                 break;                          //esce dal ciclo while e termina la sua esecuzione
             }
             System.out.println(a); //stampa a video del messaggio ricevuto
@@ -40,18 +50,21 @@ public class Server {
                 try { //blocco Try-catch
                     //risposta al client con il numero di telefono dell'utente
                     out.write("find:" + getNumber(a.substring(a.indexOf(":") + 1)));
+                    out.newLine();          //invio del messaggio al client
+                    out.flush();            //svuotamento del buffer
                 } catch (Exception e) { //in caso di errore viene stampato il messaggio
                     System.err.println(e);
                 }
-                out.newLine();          //invio del messaggio al client
-                out.flush();            //svuotamento del buffer
             }
         }
-
-        o.close();                      //chiusura dei buffer
-        i.close();
-        s.close();
-        server.close();                 //chiusura serverSocket
+        System.out.println("finito");
+        try {
+            o.close();
+            i.close();                      //chiusura dei buffer
+            s.close();                      //chiusura del socket
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

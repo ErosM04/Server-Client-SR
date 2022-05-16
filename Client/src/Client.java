@@ -51,9 +51,6 @@ public class Client {
 
         datiClient.close();             //chiusura dei buffer
         datiUtenti.close();
-        i.close();
-        o.close();
-        client.close();                 //chiusura socket
     }
 
     /**
