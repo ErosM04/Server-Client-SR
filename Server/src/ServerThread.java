@@ -10,6 +10,11 @@ public class ServerThread extends Thread {
     BufferedWriter out;
     BufferedReader in;
 
+    /**
+     * Il costruttore si occupa di impostare il timeout sul Socket e di inizializzare i buffer per la comunicazione
+     *
+     * @param s Socket, canale di comunicazione
+     */
     public ServerThread(Socket s){
         this.s = s;
 
@@ -32,6 +37,9 @@ public class ServerThread extends Thread {
         in = new BufferedReader(i);
     }
 
+    /**
+     * Metodo che si occupa della comunicazione tra Client e Server
+     */
     @Override
     public void run(){
 
@@ -57,7 +65,7 @@ public class ServerThread extends Thread {
                 }
             }
         }
-        System.out.println("finito");
+
         try {
             o.close();
             i.close();                      //chiusura dei buffer
